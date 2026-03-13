@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة الروابط الدراسية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
       :root {
-          /* الألوان الداكنة المطابقة للصورة */
-          --bg-color: #1a1d29;
-          --card-bg: #222635;
-          --card-hover: #2c3144;
+          --bg-dark: #0f1117;
+          --bg-gradient-start: #1a1d29;
+          --bg-gradient-end: #252a3d;
+          --card-bg: #1e2332;
+          --card-hover: #252d42;
           --text-main: #f8fafc;
           --text-muted: #94a3b8;
           --border-color: #2e3446;
+          --accent-glow: #6366f1;
           
-          /* ألوان أيقونات التواصل والأنظمة */
-          --whatsapp-color: #25D366;
-          --telegram-color: #0088cc;
-          --google-color: #4285F4;
-          --system-color: #eab308;
+          --whatsapp: #25D366;
+          --telegram: #0088cc;
+          --google: #4285F4;
+          --system: #eab308;
       }
       
       * {
@@ -32,15 +32,54 @@
       
       body {
           font-family: 'Cairo', sans-serif;
-          background: var(--bg-color);
+          background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
           min-height: 100vh;
           color: var(--text-main);
           padding: 2rem;
+          position: relative;
+          overflow-x: hidden;
+      }
+      
+      /* خلفية متحركة */
+      body::before {
+          content: '';
+          position: fixed;
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+          border-radius: 50%;
+          top: -250px;
+          right: -250px;
+          animation: float 20s infinite ease-in-out;
+          pointer-events: none;
+          z-index: 0;
+      }
+      
+      body::after {
+          content: '';
+          position: fixed;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, rgba(234, 179, 8, 0.1) 0%, transparent 70%);
+          border-radius: 50%;
+          bottom: -200px;
+          left: -200px;
+          animation: float 15s infinite ease-in-out reverse;
+          pointer-events: none;
+          z-index: 0;
+      }
+      
+      @keyframes float {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          33% { transform: translate(30px, -30px) rotate(120deg); }
+          66% { transform: translate(-20px, 20px) rotate(240deg); }
       }
       
       .container {
-          max-width: 1300px;
+          max-width: 1400px;
           margin: 0 auto;
+          position: relative;
+          z-index: 1;
       }
       
       .header {
@@ -49,36 +88,197 @@
           animation: fadeInDown 0.8s ease-out;
       }
       
+      .header h1 {
+          font-size: 3rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 0.5rem;
+          text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+      }
+      
       .header p {
           color: var(--text-muted);
           font-size: 1.2rem;
-          margin-top: 10px;
+          font-weight: 500;
       }
       
-      /* نظام الشبكة لعرض 4 أعمدة متساوية */
+      /* شريط البحث */
+      .search-container {
+          max-width: 600px;
+          margin: 0 auto 2.5rem;
+          position: relative;
+          animation: fadeInUp 0.8s ease-out;
+      }
+      
+      .search-box {
+          width: 100%;
+          padding: 1rem 3.5rem 1rem 1.5rem;
+          background: var(--card-bg);
+          border: 2px solid var(--border-color);
+          border-radius: 50px;
+          color: var(--text-main);
+          font-size: 1rem;
+          font-family: 'Cairo', sans-serif;
+          transition: all 0.3s ease;
+          outline: none;
+      }
+      
+      .search-box:focus {
+          border-color: var(--accent-glow);
+          box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+      }
+      
+      .search-icon {
+          position: absolute;
+          right: 1.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: var(--text-muted);
+          font-size: 1.3rem;
+      }
+      
+      /* فلاتر الفئات */
+      .filters {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+          margin-bottom: 2rem;
+          flex-wrap: wrap;
+          animation: fadeInUp 0.9s ease-out;
+      }
+      
+      .filter-btn {
+          padding: 0.7rem 1.5rem;
+          background: var(--card-bg);
+          border: 2px solid var(--border-color);
+          border-radius: 50px;
+          color: var(--text-main);
+          font-size: 0.95rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-family: 'Cairo', sans-serif;
+      }
+      
+      .filter-btn:hover {
+          background: var(--card-hover);
+          border-color: var(--accent-glow);
+          transform: translateY(-2px);
+      }
+      
+      .filter-btn.active {
+          background: var(--accent-glow);
+          border-color: var(--accent-glow);
+          box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+      }
+      
+      /* الشبكة */
       .grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1.2rem;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 1.5rem;
           padding-bottom: 2rem;
       }
       
       .card {
           background: var(--card-bg);
-          border: 1px solid var(--border-color);
-          border-radius: 12px;
-          padding: 1.2rem;
+          border: 2px solid var(--border-color);
+          border-radius: 16px;
+          padding: 1.5rem;
           text-decoration: none;
           color: var(--text-main);
           display: flex;
-          align-items: center;
-          justify-content: flex-start;
+          flex-direction: column;
           gap: 1rem;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
           animation: fadeInUp 0.5s ease-out backwards;
       }
       
-      /* تأخير ظهور الكروت بشكل متتالي (تأثير حركي لطيف) */
+      .card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.05) 100%);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+      }
+      
+      .card:hover::before {
+          opacity: 1;
+      }
+      
+      .card:hover {
+          background: var(--card-hover);
+          transform: translateY(-8px) scale(1.02);
+          border-color: var(--accent-glow);
+          box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 
+                      0 0 30px rgba(99, 102, 241, 0.2);
+      }
+      
+      .card-top {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+      }
+      
+      .icon {
+          width: 55px;
+          height: 55px;
+          border-radius: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.6rem;
+          flex-shrink: 0;
+          position: relative;
+          transition: transform 0.4s ease;
+      }
+      
+      .card:hover .icon {
+          transform: scale(1.15) rotate(5deg);
+      }
+      
+      .card h3 {
+          font-size: 1.05rem;
+          font-weight: 700;
+          line-height: 1.5;
+          flex: 1;
+      }
+      
+      /* تصنيف الألوان */
+      .card.whatsapp .icon { 
+          background: linear-gradient(135deg, rgba(37, 211, 102, 0.2) 0%, rgba(37, 211, 102, 0.05) 100%);
+          color: var(--whatsapp);
+          box-shadow: 0 8px 20px rgba(37, 211, 102, 0.15);
+      }
+      
+      .card.telegram .icon { 
+          background: linear-gradient(135deg, rgba(0, 136, 204, 0.2) 0%, rgba(0, 136, 204, 0.05) 100%);
+          color: var(--telegram);
+          box-shadow: 0 8px 20px rgba(0, 136, 204, 0.15);
+      }
+      
+      .card.google .icon { 
+          background: linear-gradient(135deg, rgba(66, 133, 244, 0.2) 0%, rgba(66, 133, 244, 0.05) 100%);
+          color: var(--google);
+          box-shadow: 0 8px 20px rgba(66, 133, 244, 0.15);
+      }
+      
+      .card.system .icon { 
+          background: linear-gradient(135deg, rgba(234, 179, 8, 0.2) 0%, rgba(234, 179, 8, 0.05) 100%);
+          color: var(--system);
+          box-shadow: 0 8px 20px rgba(234, 179, 8, 0.15);
+      }
+      
+      /* أنيميشن متتالي للكروت */
       .card:nth-child(1) { animation-delay: 0.05s; }
       .card:nth-child(2) { animation-delay: 0.1s; }
       .card:nth-child(3) { animation-delay: 0.15s; }
@@ -89,68 +289,41 @@
       .card:nth-child(8) { animation-delay: 0.4s; }
       .card:nth-child(9) { animation-delay: 0.45s; }
       .card:nth-child(10) { animation-delay: 0.5s; }
-      .card:nth-child(11) { animation-delay: 0.55s; }
-      .card:nth-child(12) { animation-delay: 0.6s; }
-      .card:nth-child(13) { animation-delay: 0.65s; }
-      .card:nth-child(14) { animation-delay: 0.7s; }
-      .card:nth-child(15) { animation-delay: 0.75s; }
       
-      .card:hover {
-          background: var(--card-hover);
-          transform: translateY(-3px);
-          border-color: #5865f2;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      .card.hidden {
+          display: none;
       }
       
-      .icon {
-          width: 45px;
-          height: 45px;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.4rem;
-          background: rgba(255, 255, 255, 0.05);
-          flex-shrink: 0;
-      }
-      
-      .card svg {
-          width: 24px;
-          height: 24px;
-      }
-      
-      .card h3 {
-          font-size: 1rem;
-          font-weight: 600;
-          line-height: 1.4;
-      }
-      
-      /* تلوين خلفيات الأيقونات حسب النوع */
-      .card.whatsapp .icon { color: var(--whatsapp-color); background: rgba(37, 211, 102, 0.1); }
-      .card.telegram .icon { color: var(--telegram-color); background: rgba(0, 136, 204, 0.1); }
-      .card.google .icon { color: var(--google-color); background: rgba(66, 133, 244, 0.1); }
-      .card.system .icon { color: var(--system-color); background: rgba(234, 179, 8, 0.1); }
-      
-      /* إعدادات الحركة (الأنيميشن) */
       @keyframes fadeInDown {
-          from { opacity: 0; transform: translateY(-20px); }
+          from { opacity: 0; transform: translateY(-30px); }
           to { opacity: 1; transform: translateY(0); }
       }
       
       @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
+          from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
       }
       
-      /* تجاوب الشاشة مع الأجهزة المختلفة (لضمان ظهورها بشكل جيد على الموبايل والتابلت) */
-      @media (max-width: 1100px) {
-          .grid { grid-template-columns: repeat(3, 1fr); }
+      /* رسالة عدم وجود نتائج */
+      .no-results {
+          text-align: center;
+          padding: 4rem 2rem;
+          color: var(--text-muted);
+          font-size: 1.2rem;
+          display: none;
       }
-      @media (max-width: 800px) {
-          .grid { grid-template-columns: repeat(2, 1fr); }
+      
+      .no-results.show {
+          display: block;
       }
-      @media (max-width: 500px) {
+      
+      /* تجاوب */
+      @media (max-width: 768px) {
+          .header h1 { font-size: 2rem; }
+          .header p { font-size: 1rem; }
           .grid { grid-template-columns: 1fr; }
+          .filters { gap: 0.7rem; }
+          .filter-btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
       }
     </style>
 </head>
@@ -158,123 +331,236 @@
 <body>
     <div class="container">
         <header class="header">
-            <p>جميع المصادر والجروبات الدراسية في مكان واحد</p>
+            <h1>🎓 بوابة المواد الدراسية</h1>
+            <p>جميع المصادر والجروبات في مكان واحد</p>
         </header>
 
-        <div class="grid">
-            <a href="http://e-books.helwan.edu.eg/login" target="_blank" rel="noopener noreferrer" class="card system">
-                <div class="icon">📚</div>
-                <h3>Book system</h3>
-            </a>
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput" placeholder="ابحث عن مادة أو جروب...">
+            <span class="search-icon">🔍</span>
+        </div>
 
-            <a href="https://myu.helwan.edu.eg/login" target="_blank" rel="noopener noreferrer" class="card system">
-                <div class="icon">🏛️</div>
-                <h3>ابن الهيثم</h3>
-            </a>
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">الكل</button>
+            <button class="filter-btn" data-filter="system">الأنظمة</button>
+            <button class="filter-btn" data-filter="whatsapp">واتساب</button>
+            <button class="filter-btn" data-filter="telegram">تليجرام</button>
+            <button class="filter-btn" data-filter="google">جوجل</button>
+        </div>
 
-            <a href="https://eservices.helwan.edu.eg/smartID/" target="_blank" rel="noopener noreferrer" class="card system">
-                <div class="icon">🆔</div>
-                <h3>كارت الطالب الذكى</h3>
-            </a>
-
-            <a href="https://t.me/hibarvehicle_bot?start=_tgr_svD_U8A1NGU0" target="_blank" rel="noopener noreferrer" class="card telegram">
-                <div class="icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0 .056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg>
+        <div class="grid" id="cardsGrid">
+            <a href="http://e-books.helwan.edu.eg/login" target="_blank" class="card system" data-category="system">
+                <div class="card-top">
+                    <div class="icon">📚</div>
+                    <h3>Book system</h3>
                 </div>
-                <h3>بوت تليجرام المواد</h3>
             </a>
 
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSemMXMmmfL12hKB3PK4wzWaos-VHmjBC9Eg9Dz5qz1bteDbJA/viewform?usp=sharing&ouid=100411000188551107248" target="_blank" rel="noopener noreferrer" class="card google">
-                <div class="icon">📝</div>
-                <h3>غلاف للبيانات pdf علي الميل</h3>
+            <a href="https://myu.helwan.edu.eg/login" target="_blank" class="card system" data-category="system">
+                <div class="card-top">
+                    <div class="icon">🏛️</div>
+                    <h3>ابن الهيثم</h3>
+                </div>
             </a>
 
-            <a href="https://drive.google.com/drive/folders/16LUEKRA98A401JAE1Z1Pw8ttFt_QNwrU?usp=drive_link" target="_blank" rel="noopener noreferrer" class="card google">
-                <div class="icon">📂</div>
-                <h3>pdf المواد</h3>
+            <a href="https://eservices.helwan.edu.eg/smartID/" target="_blank" class="card system" data-category="system">
+                <div class="card-top">
+                    <div class="icon">🆔</div>
+                    <h3>كارت الطالب الذكى</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/H01IcAaYKOuJ46kTkkyBs5?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">📢</div>
-                <h3>الجروب العام للدفعة</h3>
+            <a href="https://t.me/hibarvehicle_bot?start=_tgr_svD_U8A1NGU0" target="_blank" class="card telegram" data-category="telegram">
+                <div class="card-top">
+                    <div class="icon">🤖</div>
+                    <h3>بوت تليجرام المواد</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/DCfpqDPtLBV5xU2IPV7Gk6?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🔩</div>
-                <h3>تكنولوجيا المعادن</h3>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSemMXMmmfL12hKB3PK4wzWaos-VHmjBC9Eg9Dz5qz1bteDbJA/viewform" target="_blank" class="card google" data-category="google">
+                <div class="card-top">
+                    <div class="icon">📝</div>
+                    <h3>غلاف البيانات PDF</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/HlHoxowvCLKKP2ifBMDgVY?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🏎️</div>
-                <h3>أنظمة هياكل السيارات</h3>
+            <a href="https://drive.google.com/drive/folders/16LUEKRA98A401JAE1Z1Pw8ttFt_QNwrU" target="_blank" class="card google" data-category="google">
+                <div class="card-top">
+                    <div class="icon">📂</div>
+                    <h3>PDF المواد</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/BmYofMuligzCG562ZXgLsi?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">⚙️</div>
-                <h3>أساسيات المحرك</h3>
+            <a href="https://chat.whatsapp.com/H01IcAaYKOuJ46kTkkyBs5" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">📢</div>
+                    <h3>الجروب العام للدفعة</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/J7RWQbaANqQ1Go3oU9miio?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🔋</div>
-                <h3>تك المركبات الهجين والكهربائية</h3>
+            <a href="https://chat.whatsapp.com/DCfpqDPtLBV5xU2IPV7Gk6" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🔩</div>
+                    <h3>تكنولوجيا المعادن</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/KapYRBuYEnI6ZxjAAJZsNR?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🚙</div>
-                <h3>أساسيات جسم السيارة</h3>
+            <a href="https://chat.whatsapp.com/HlHoxowvCLKKP2ifBMDgVY" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🏎️</div>
+                    <h3>أنظمة هياكل السيارات</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/F9FiXoLy4yHJGaUxtSCrc8?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🔍</div>
-                <h3>الفحص وضمان الجودة</h3>
+            <a href="https://chat.whatsapp.com/BmYofMuligzCG562ZXgLsi" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">⚙️</div>
+                    <h3>أساسيات المحرك</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/CQYgW2kzw7P5Qq7RLKBNCc?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🌍</div>
-                <h3>المبادئ الاساسية لحماية البيئة</h3>
+            <a href="https://chat.whatsapp.com/J7RWQbaANqQ1Go3oU9miio" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🔋</div>
+                    <h3>تك المركبات الهجين والكهربائية</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/LRkJnnYws6yKdnXEsR9li2?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">📖</div>
-                <h3>(س) أساسيات المحرك</h3>
+            <a href="https://chat.whatsapp.com/KapYRBuYEnI6ZxjAAJZsNR" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🚙</div>
+                    <h3>أساسيات جسم السيارة</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/GqRAodcTy3WLkCiD9a6xFA?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">📖</div>
-                <h3>(س) تكنولوجيا المعادن</h3>
+            <a href="https://chat.whatsapp.com/F9FiXoLy4yHJGaUxtSCrc8" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🔍</div>
+                    <h3>الفحص وضمان الجودة</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/FGKQjGUoGpm9ob0ZQfKLCZ?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">📊</div>
-                <h3>(س) تقارير فنية</h3>
+            <a href="https://chat.whatsapp.com/CQYgW2kzw7P5Qq7RLKBNCc" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🌍</div>
+                    <h3>المبادئ الأساسية لحماية البيئة</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/GBqN8e6SV3E4cB4VUx2iJu?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">📖</div>
-                <h3>(س) المبادئ الاساسية لحماية البيئة</h3>
+            <a href="https://chat.whatsapp.com/LRkJnnYws6yKdnXEsR9li2" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">📖</div>
+                    <h3>(س) أساسيات المحرك</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/Ge8DNC7zs6M5C1G2BP8uqq?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🛠️</div>
-                <h3>عملي انظمة هياكل السيارت</h3>
+            <a href="https://chat.whatsapp.com/GqRAodcTy3WLkCiD9a6xFA" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">📖</div>
+                    <h3>(س) تكنولوجيا المعادن</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/E7YLcOZzIuT5dXuVMyFIcm?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🛠️</div>
-                <h3>عملي أساسيات جسم السيارة</h3>
+            <a href="https://chat.whatsapp.com/FGKQjGUoGpm9ob0ZQfKLCZ" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">📊</div>
+                    <h3>(س) تقارير فنية</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/KfgZLoagDstG4QOf4DdVYW?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">🛠️</div>
-                <h3>عملي الفحص وضمان الجودة</h3>
+            <a href="https://chat.whatsapp.com/GBqN8e6SV3E4cB4VUx2iJu" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">📖</div>
+                    <h3>(س) المبادئ الأساسية لحماية البيئة</h3>
+                </div>
             </a>
 
-            <a href="https://chat.whatsapp.com/Edv1UpkfA65LJ9Q0TtuQoO?mode=gi_t" target="_blank" rel="noopener noreferrer" class="card whatsapp">
-                <div class="icon">⚡</div>
-                <h3>عملي تك المركبات الهجين والكهربائية</h3>
+            <a href="https://chat.whatsapp.com/Ge8DNC7zs6M5C1G2BP8uqq" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🛠️</div>
+                    <h3>عملي أنظمة هياكل السيارات</h3>
+                </div>
             </a>
 
+            <a href="https://chat.whatsapp.com/E7YLcOZzIuT5dXuVMyFIcm" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🛠️</div>
+                    <h3>عملي أساسيات جسم السيارة</h3>
+                </div>
+            </a>
+
+            <a href="https://chat.whatsapp.com/KfgZLoagDstG4QOf4DdVYW" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">🛠️</div>
+                    <h3>عملي الفحص وضمان الجودة</h3>
+                </div>
+            </a>
+
+            <a href="https://chat.whatsapp.com/Edv1UpkfA65LJ9Q0TtuQoO" target="_blank" class="card whatsapp" data-category="whatsapp">
+                <div class="card-top">
+                    <div class="icon">⚡</div>
+                    <h3>عملي تك المركبات الهجين والكهربائية</h3>
+                </div>
+            </a>
+        </div>
+
+        <div class="no-results" id="noResults">
+            <p>😕 لم يتم العثور على نتائج</p>
         </div>
     </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const cardsGrid = document.getElementById('cardsGrid');
+        const cards = document.querySelectorAll('.card');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('noResults');
+
+        // البحث
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            filterCards(searchTerm, getActiveFilter());
+        });
+
+        // الفلاتر
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                filterCards(searchInput.value.toLowerCase().trim(), filter);
+            });
+        });
+
+        function getActiveFilter() {
+            const activeBtn = document.querySelector('.filter-btn.active');
+            return activeBtn ? activeBtn.dataset.filter : 'all';
+        }
+
+        function filterCards(searchTerm, category) {
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const cardCategory = card.dataset.category;
+                
+                const matchesSearch = title.includes(searchTerm);
+                const matchesCategory = category === 'all' || cardCategory === category;
+
+                if (matchesSearch && matchesCategory) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.classList.add('show');
+            } else {
+                noResults.classList.remove('show');
+            }
+        }
+    </script>
 </body>
 </html>
