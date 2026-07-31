@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>لوحة تحكم طالب تكنولوجيا السيارات الهجين | جامعة العاصمة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -35,9 +35,12 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 
+        html, body { max-width: 100%; overflow-x: hidden; }
+
         body {
             display: flex;
             height: 100vh;
+            height: 100dvh; /* أدق على متصفحات الجوال */
             overflow: hidden;
             background: var(--bg-dark);
             color: var(--text-main);
@@ -48,7 +51,7 @@
         /* ===================== خلفية السباق ===================== */
         .race-bg {
             position: fixed; inset: 0; z-index: 0;
-            background: 
+            background:
                 linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.9) 60%, rgba(10,10,10,0.97) 100%),
                 url('https://cdn.displate.com/artwork/2025-09-17/089dc5b3-0ad8-40fa-bd85-031fdc493b2e.jpg?speedsize=w_1920') center/cover no-repeat;
             filter: saturate(1.2) contrast(1.1);
@@ -79,7 +82,7 @@
             --background: linear-gradient(135deg, var(--primary), var(--accent));
             --shadow: rgba(227, 6, 19, 0.28); --text: #888;
             --page: rgba(255, 255, 255, 0.36); --page-fold: rgba(255, 255, 255, 0.52);
-            --duration: 3s; width: 200px; height: 140px; position: relative;
+            --duration: 3s; width: 200px; height: 140px; position: relative; max-width: 80vw;
         }
         .loader:before, .loader:after {
             --r: -6deg; content: ""; position: absolute; bottom: 8px; width: 120px; top: 80%;
@@ -105,7 +108,7 @@
         .loader div ul li:first-child { --r: 0deg; --o: 1; }
         .loader div ul li:last-child { --o: 1; }
         .loader span { display: block; left: 0; right: 0; top: 100%; margin-top: 20px; text-align: center; color: var(--text-main); font-weight: 600; }
-        
+
         @keyframes page-2 { 0% { transform: rotateY(180deg); opacity: 0; } 20% { opacity: 1; } 35%, 100% { opacity: 0; } 50%, 100% { transform: rotateY(0deg); } }
         @keyframes page-3 { 15% { transform: rotateY(180deg); opacity: 0; } 35% { opacity: 1; } 50%, 100% { opacity: 0; } 65%, 100% { transform: rotateY(0deg); } }
         @keyframes page-4 { 30% { transform: rotateY(180deg); opacity: 0; } 50% { opacity: 1; } 65%, 100% { opacity: 0; } 80%, 100% { transform: rotateY(0deg); } }
@@ -114,6 +117,7 @@
         /* ===================== Sidebar ===================== */
         .sidebar {
             width: var(--sidebar-width);
+            max-width: 85vw;
             background: linear-gradient(180deg, rgba(15, 15, 15, 0.96) 0%, rgba(5, 5, 5, 0.98) 100%);
             color: #fff; display: flex; flex-direction: column;
             box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
@@ -139,7 +143,8 @@
             padding: 20px 22px 8px; font-size: 0.72rem; color: #7a7a7a;
             font-weight: 700; letter-spacing: 1px; text-transform: uppercase; direction: rtl;
         }
-        .nav-menu { flex: 1; overflow-y: auto; direction: rtl; padding-bottom: 10px; }
+        .nav-menu { overflow-y: auto; direction: rtl; padding-bottom: 10px; }
+        .nav-menu.grow { flex: 1; }
         .nav-menu::-webkit-scrollbar { width: 5px; }
         .nav-menu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
 
@@ -160,41 +165,43 @@
         .sidebar-footer span { color: var(--primary); }
 
         /* ===================== Content wrapper & Topbar ===================== */
-        .content-wrapper { flex: 1; display: flex; flex-direction: column; direction: rtl; overflow: hidden; position: relative; z-index: 1; }
+        .content-wrapper { flex: 1; display: flex; flex-direction: column; direction: rtl; overflow: hidden; position: relative; z-index: 1; min-width: 0; }
 
         .topbar {
             height: var(--topbar-height);
             background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.3); z-index: 90; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(14px, 3vw, 28px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3); z-index: 90; flex-shrink: 0; gap: 10px;
         }
+        .page-title { min-width: 0; }
         .page-title h1 {
-            font-size: 1.2rem; font-weight: 800;
+            font-size: clamp(1rem, 3vw, 1.2rem); font-weight: 800;
             background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .page-title span { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+        .page-title span { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .topbar-actions { display: flex; align-items: center; gap: 12px; }
+        .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .status-badge {
             display: flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 50px;
             font-size: 0.78rem; font-weight: 700; border: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.04); color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.04); color: var(--text-muted); white-space: nowrap;
         }
         .status-badge.live { color: var(--success); border-color: rgba(37, 211, 102, 0.35); background: var(--success-tint); }
         .status-badge.live i { font-size: 0.55rem; animation: blink 1.4s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        main.main-area { flex: 1; padding: 22px; overflow-y: auto; display: flex; flex-direction: column; }
-        
+        main.main-area { flex: 1; padding: clamp(12px, 4vw, 22px); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; }
+
         .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; padding-top: 1rem; padding-bottom: 2rem; width: 100%;}
 
         .view { display: none; height: 100%; }
         .view.active { display: block; }
 
         /* ===================== Header Styles ===================== */
-        .header { text-align: center; margin-bottom: 3rem; animation: fadeInDown 0.8s ease-out; position: relative; }
+        .header { text-align: center; margin-bottom: clamp(1.75rem, 5vw, 3rem); animation: fadeInDown 0.8s ease-out; position: relative; }
         .header-badge {
             display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1.2rem;
             background: rgba(227, 6, 19, 0.15); border: 1px solid rgba(227, 6, 19, 0.3);
@@ -204,25 +211,26 @@
         .header-badge .pulse { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse 1.5s infinite; box-shadow: 0 0 10px var(--primary); }
         @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
         .header h1 {
-            font-size: 3rem; font-weight: 800; margin-bottom: 0.75rem;
+            font-size: clamp(1.7rem, 7vw, 3rem); font-weight: 800; margin-bottom: 0.75rem;
             background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, #fff 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(227, 6, 19, 0.3); letter-spacing: -1px;
+            word-break: break-word;
         }
-        .header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 500; max-width: 500px; margin: 0 auto; }
+        .header p { color: var(--text-muted); font-size: clamp(0.95rem, 3vw, 1.15rem); font-weight: 500; max-width: 500px; margin: 0 auto; }
         .header-divider { width: 120px; height: 3px; background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent); margin: 1.5rem auto 0; border-radius: 3px; }
 
         /* ===================== Resources Native Styling ===================== */
-        .stats-bar { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stats-bar { display: flex; justify-content: center; gap: clamp(0.75rem, 3vw, 1.5rem); margin-bottom: clamp(1.5rem, 5vw, 2.5rem); flex-wrap: wrap; }
         .stat-item {
             text-align: center; padding: 0.8rem 1.5rem; background: var(--card-bg);
             border: 1px solid var(--border-color); border-radius: 16px; backdrop-filter: blur(20px);
-            border-top: 2px solid var(--primary); transition: all 0.3s ease; min-width: 120px;
+            border-top: 2px solid var(--primary); transition: all 0.3s ease; min-width: 110px;
         }
         .stat-item:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(227, 6, 19, 0.2); }
         .stat-value { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .stat-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .search-container { max-width: 600px; margin: 0 auto 2.5rem; position: relative; }
+        .search-container { max-width: 600px; margin: 0 auto clamp(1.5rem, 5vw, 2.5rem); position: relative; }
         .search-box {
             width: 100%; padding: 1.1rem 3.5rem 1.1rem 1.5rem; background: var(--card-bg);
             border: 1px solid var(--border-color); border-radius: 16px; color: var(--text-main);
@@ -234,10 +242,10 @@
         .search-icon { position: absolute; right: 1.3rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; transition: color 0.3s ease; }
         .search-box:focus + .search-icon { color: var(--primary); }
 
-        .filters { display: flex; gap: 0.75rem; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .filters { display: flex; gap: 0.6rem; justify-content: center; margin-bottom: clamp(1.5rem, 5vw, 2.5rem); flex-wrap: wrap; }
         .filter-btn {
-            padding: 0.6rem 1.4rem; background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            padding: 0.55rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; color: var(--text-muted); font-size: 0.87rem; font-weight: 600; cursor: pointer;
             transition: all 0.3s ease; font-family: 'Cairo', sans-serif; backdrop-filter: blur(20px); position: relative; overflow: hidden;
         }
         .filter-btn::before {
@@ -248,12 +256,12 @@
         .filter-btn.active { color: #0a0a0a; border-color: transparent; box-shadow: 0 4px 20px rgba(227, 6, 19, 0.4); }
         .filter-btn.active::before { opacity: 1; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; padding-bottom: 2rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 1.1rem; padding-bottom: 2rem; }
         .card {
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px;
-            padding: 1.5rem; text-decoration: none; color: var(--text-main); display: flex; flex-direction: column;
+            padding: 1.4rem; text-decoration: none; color: var(--text-main); display: flex; flex-direction: column;
             gap: 1rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); min-width: 0;
         }
         .card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -264,13 +272,13 @@
             box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(227, 6, 19, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
         .card:hover::before { opacity: 1; }
-        .card-top { display: flex; align-items: center; gap: 1rem; }
+        .card-top { display: flex; align-items: center; gap: 1rem; min-width: 0; }
         .icon {
             width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem; flex-shrink: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative;
         }
         .card:hover .icon { transform: scale(1.1) rotate(-3deg); }
-        .card h3 { font-size: 1.05rem; font-weight: 700; line-height: 1.5; flex: 1; transition: color 0.3s ease; }
+        .card h3 { font-size: 1.02rem; font-weight: 700; line-height: 1.5; flex: 1; transition: color 0.3s ease; min-width: 0; word-break: break-word; }
         .card:hover h3 { color: white; }
 
         .card.whatsapp .icon { background: rgba(37, 211, 102, 0.15); color: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.1); }
@@ -306,16 +314,18 @@
             display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
             padding: 16px 20px; border-bottom: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.3);
         }
-        .sched-login { display: flex; gap: 8px; align-items: center; }
+        .sched-login { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .sched-login input {
             padding: 9px 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); border-radius: 8px;
             color: var(--text-main); text-align: center; font-weight: 700; outline: none; font-family: 'Cairo', sans-serif;
+            min-width: 0; flex: 1 1 120px;
         }
         .sched-login input:focus { border-color: var(--primary); }
 
         .btn {
-            padding: 9px 18px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.86rem;
-            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 7px; font-family: 'Cairo', sans-serif;
+            padding: 9px 16px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.86rem;
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-family: 'Cairo', sans-serif;
+            white-space: nowrap;
         }
         .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(227, 6, 19, 0.25); }
         .btn-primary:hover { filter: brightness(1.15); }
@@ -324,12 +334,12 @@
         .btn-danger { background: var(--danger-tint); color: var(--danger); }
         .btn-danger:hover { background: rgba(255, 92, 92, 0.25); }
 
-        .sched-status { padding: 7px 16px; border-radius: 50px; font-weight: 700; font-size: 0.82rem; display: flex; align-items: center; gap: 7px; }
+        .sched-status { padding: 7px 16px; border-radius: 50px; font-weight: 700; font-size: 0.82rem; display: flex; align-items: center; gap: 7px; white-space: nowrap; }
         .sched-status.locked { background: var(--danger-tint); color: var(--danger); }
         .sched-status.unlocked { background: var(--success-tint); color: var(--success); }
 
-        .table-scroll { overflow-x: auto; padding: 0; }
-        table { width: 100%; border-collapse: collapse; text-align: center; }
+        .table-scroll { overflow-x: auto; padding: 0; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; min-width: 620px; border-collapse: collapse; text-align: center; }
         th { background: var(--primary); color: #fff; padding: 15px 13px; font-weight: 800; font-size: 0.95rem; border: none; }
         td { padding: 15px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; font-size: 0.9rem; color: var(--text-main); }
         tr:last-child td { border-bottom: none; }
@@ -368,7 +378,7 @@
         .btn-add-session { background: var(--primary); color: #fff; border: none; padding: 7px 10px; border-radius: 6px; font-size: 0.78rem; margin-top: 10px; cursor: pointer; font-weight: 700; width: 100%; transition: 0.2s; }
         .btn-add-session:hover { filter: brightness(1.15); }
 
-        .sync-badge { display: inline-flex; align-items: center; gap: 8px; padding: 5px 15px; border-radius: 50px; font-size: 0.78rem; font-weight: 700; background: var(--success-tint); color: var(--success); }
+        .sync-badge { display: inline-flex; align-items: center; gap: 8px; padding: 5px 15px; border-radius: 50px; font-size: 0.78rem; font-weight: 700; background: var(--success-tint); color: var(--success); white-space: nowrap; }
         .sync-badge.syncing { background: var(--accent-tint); color: var(--accent); }
         .sync-badge.error { background: var(--danger-tint); color: var(--danger); border: 1px solid var(--danger);}
 
@@ -377,21 +387,49 @@
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
             padding: 14px 28px; border-radius: 10px; font-weight: 700; color: #fff; z-index: 1000;
             opacity: 0; transition: 0.4s; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+            max-width: 90vw; text-align: center;
         }
         .notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .notification-success { background: linear-gradient(135deg, #1e8a4e, var(--success)); }
         .notification-error { background: linear-gradient(135deg, #a3040d, var(--primary)); }
 
-        @media (max-width: 900px) {
-            .sidebar { position: fixed; top: 0; bottom: 0; transform: translateX(100%); transition: 0.3s; }
-            .sidebar.open { transform: translateX(0); }
-            .menu-toggle { display: flex !important; }
-            .header h1 { font-size: 2.2rem; }
-        }
         .menu-toggle {
             display: none; align-items: center; justify-content: center;
             width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.05); cursor: pointer; color: var(--accent);
+            background: rgba(255, 255, 255, 0.05); cursor: pointer; color: var(--accent); flex-shrink: 0;
+        }
+
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 99;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        /* ===================== لوحي / جوال كبير ===================== */
+        @media (max-width: 900px) {
+            .sidebar { position: fixed; top: 0; bottom: 0; right: 0; transform: translateX(100%); transition: 0.3s; }
+            .sidebar.open { transform: translateX(0); }
+            .menu-toggle { display: flex !important; }
+        }
+
+        /* ===================== جوال صغير ===================== */
+        @media (max-width: 480px) {
+            .topbar { height: 60px; padding: 0 12px; }
+            .page-title span { display: none; }
+            .status-badge span, .status-badge { font-size: 0.7rem; padding: 5px 10px; }
+            .stats-bar { gap: 0.6rem; }
+            .stat-item { min-width: 90px; padding: 0.6rem 1rem; }
+            .search-box { padding: 0.9rem 3rem 0.9rem 1rem; font-size: 0.92rem; }
+            .filters { gap: 0.4rem; }
+            .filter-btn { padding: 0.5rem 0.9rem; font-size: 0.8rem; }
+            .card { padding: 1.1rem; }
+            .icon { width: 46px; height: 46px; font-size: 1.3rem; }
+            .sched-toolbar { flex-direction: column; align-items: stretch; }
+            .sched-login { width: 100%; }
+            .sched-login input { flex: 1 1 auto; }
+            #adminControls { flex-direction: column; align-items: stretch; }
+            #adminControls .btn { width: 100%; }
+            .btn { width: 100%; }
+            .sched-toolbar > .sched-status, .sched-toolbar > .sync-badge { align-self: flex-start; }
         }
     </style>
 </head>
@@ -418,6 +456,7 @@
 </div>
 
 <div class="notification" id="notification"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <!-- ===== Sidebar ===== -->
 <aside class="sidebar" id="sidebar">
@@ -439,23 +478,22 @@
     </a>
   </nav>
 
+  <!-- روابط هامة (تفتح خارجياً) — تظهر أسفل جدول المحاضرات مباشرةً -->
   <div class="menu-label">روابط هامة (تفتح خارجياً)</div>
-  <nav class="nav-menu" style="flex:none;">
-    <!-- غلاف البيانات PDF يفتح في نافذة خارجية -->
-    <a class="nav-item" href="https://docs.google.com/forms/d/e/1FAIpQLSemMXMmmfL12hKB3PK4wzWaos-VHmjBC9Eg9Dz5qz1bteDbJA/viewform" target="_blank">
+  <nav class="nav-menu grow">
+    <a class="nav-item" href="https://docs.google.com/forms/d/e/1FAIpQLSemMXMmmfL12hKB3PK4wzWaos-VHmjBC9Eg9Dz5qz1bteDbJA/viewform" target="_blank" rel="noopener">
       <i class="fas fa-file-pdf"></i><span>غلاف البيانات PDF</span>
       <i class="fas fa-external-link-alt" style="font-size: 0.8rem; margin-right: auto; color: var(--text-muted);"></i>
     </a>
-    <!-- خريطة الكلية تفتح في نافذة خارجية بناءً على طلبك -->
-    <a class="nav-item" href="https://sites.google.com/view/technology---education-capita/%D9%83%D9%84%D9%8A%D8%A9-%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85" target="_blank">
+    <a class="nav-item" href="https://sites.google.com/view/technology---education-capita/%D9%83%D9%84%D9%8A%D8%A9-%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85" target="_blank" rel="noopener">
       <i class="fas fa-map-marked-alt"></i><span>خريطة الكلية</span>
       <i class="fas fa-external-link-alt" style="font-size: 0.8rem; margin-right: auto; color: var(--text-muted);"></i>
     </a>
-    <a class="nav-item" href="https://myhu.capu.edu.eg/login" target="_blank">
+    <a class="nav-item" href="https://myhu.capu.edu.eg/login" target="_blank" rel="noopener">
       <i class="fas fa-university"></i><span>منصة الجامعة MyHU</span>
       <i class="fas fa-external-link-alt" style="font-size: 0.8rem; margin-right: auto; color: var(--text-muted);"></i>
     </a>
-    <a class="nav-item" href="https://e-books.capu.edu.eg/login" target="_blank">
+    <a class="nav-item" href="https://e-books.capu.edu.eg/login" target="_blank" rel="noopener">
       <i class="fas fa-book-open"></i><span>الكتب الإلكترونية</span>
       <i class="fas fa-external-link-alt" style="font-size: 0.8rem; margin-right: auto; color: var(--text-muted);"></i>
     </a>
@@ -467,8 +505,8 @@
 <!-- ===== Content ===== -->
 <div class="content-wrapper">
   <header class="topbar">
-    <div style="display:flex;align-items:center;gap:14px;">
-      <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+    <div style="display:flex;align-items:center;gap:14px;min-width:0;">
+      <button class="menu-toggle" onclick="toggleSidebar()" aria-label="فتح القائمة"><i class="fas fa-bars"></i></button>
       <div class="page-title">
         <h1 id="topbarTitle">الرئيسية (السيارات الهجين)</h1>
         <span id="topbarSubtitle">جميع المصادر والجروبات في مكان واحد</span>
@@ -542,7 +580,7 @@
             <span class="sync-badge" id="syncBadge">🔄 جاري التحميل...</span>
             <div class="sched-login" id="loginSection">
               <button class="btn btn-primary" onclick="unlockAdmin()"><i class="fas fa-key"></i> دخول المدير</button>
-              <input type="password" id="passCode" placeholder="الرمز السري">
+              <input type="password" id="passCode" placeholder="الرمز السري" inputmode="numeric">
             </div>
             <div id="adminControls" style="display:none;gap:10px;">
               <button class="btn btn-success" onclick="saveToSheet()"><i class="fas fa-cloud-upload-alt"></i> حفظ في الشيت</button>
@@ -574,9 +612,19 @@ const SHEET_ID          = '1UPuMmJqmX5ffPye3LA6DgJKTR435HgrCKrbsOenP-_0';
 const SHEET_CSV_BASE    = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 const SCHED_APP_SCRIPT  = 'https://script.google.com/macros/s/AKfycbwqJoTMA29cOMaDdIeLiX6EO8i6IXdUCf8ltV4CbKBOEAN0xMVqxCqRtSoi68Q8TXYS/exec';
 
+/* فتح/إغلاق القائمة الجانبية على الجوال */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
 /* التنقل بين الواجهات */
 function switchView(viewId, el, title, subtitle){
-  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.nav-item[data-view]').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('topbarTitle').textContent = title;
   document.getElementById('topbarSubtitle').textContent = subtitle;
@@ -584,7 +632,7 @@ function switchView(viewId, el, title, subtitle){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + viewId).classList.add('active');
 
-  if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
+  closeSidebar();
 }
 
 function showNotification(msg, type){
@@ -602,8 +650,9 @@ async function loadResources(){
   const grid = document.getElementById('resGrid');
   try{
     const res = await fetch(RES_SCRIPT_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    resAllData = data;
+    resAllData = Array.isArray(data) ? data : [];
     renderResources();
   }catch(err){
     console.error(err);
@@ -613,22 +662,29 @@ async function loadResources(){
 
 const RES_LABELS = {whatsapp:'واتساب', telegram:'تليجرام', google:'جوجل', system:'نظام'};
 
+function escapeHTML(str){
+  return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 function resCardHTML({link, category, icon, name, label}){
+  const safeName = escapeHTML(name);
+  const safeLabel = escapeHTML(label);
+  const safeLink = escapeHTML(link);
   return `
-    <a href="${link}" target="_blank" class="card ${category}" data-category="${category}" data-name="${name.toLowerCase()}">
+    <a href="${safeLink}" target="_blank" rel="noopener" class="card ${category}" data-category="${category}" data-name="${safeName.toLowerCase()}">
       <span class="card-arrow">↗</span>
       <div class="card-top">
         <div class="icon">${icon}</div>
-        <h3>${name}</h3>
+        <h3>${safeName}</h3>
       </div>
-      <span class="card-category">${label}</span>
+      <span class="card-category">${safeLabel}</span>
     </a>`;
 }
 
 function renderResources(){
   const grid = document.getElementById('resGrid');
   let html = resCardHTML({link:'https://bodyomer011-droid.github.io/my-college-schedule/', category:'system', icon:'📅', name:'جدول المحاضرات الدراسي', label:'نظام'});
-  
+
   resAllData.forEach(item => {
     html += resCardHTML({
       link:item.link, category:item.category, icon:item.icon,
@@ -653,7 +709,7 @@ function applyResFilter(){
     card.classList.toggle('hidden', !show);
     if (show) visible++;
   });
-  
+
   document.getElementById('resNoResults').classList.toggle('show', visible === 0);
 }
 
@@ -680,7 +736,7 @@ async function loadFromSheet(){
     const noCacheUrl = SHEET_CSV_BASE + '&t=' + new Date().getTime();
     const response = await fetch(noCacheUrl);
     if (!response.ok) throw new Error("Network response was not ok");
-    
+
     const csvText = await response.text();
     const loadedData = parseCSVToSchedule(csvText);
 
@@ -883,7 +939,9 @@ async function saveToSheet(){
       method:'POST', mode:'no-cors', body: JSON.stringify(dataToSave),
       headers:{'Content-Type':'text/plain;charset=utf-8'}
     });
-    showNotification('تم حفظ التعديلات بنجاح! سيظهر للجميع الآن ✅', 'success');
+    // ملاحظة: وضع no-cors يمنع قراءة نتيجة الطلب الفعلية، لذا لا يمكن التأكد
+    // برمجياً من نجاح الحفظ في Google Sheets من هنا. تأكد يدوياً من الشيت بعد الحفظ.
+    showNotification('تم إرسال التعديلات، تحقق من الشيت للتأكد من الحفظ ✅', 'success');
     updateSyncBadge('success');
   }catch(err){
     console.error(err);
@@ -921,9 +979,9 @@ function updateSyncBadge(status){
   const badge = document.getElementById('syncBadge');
   if (status === 'loading'){ badge.className = 'sync-badge syncing'; badge.innerHTML = '🔄 جاري التحميل...'; }
   else if (status === 'success'){ badge.className = 'sync-badge'; badge.innerHTML = '✅ متزامن مع أحدث البيانات'; }
-  else if (status === 'error'){ 
-      badge.className = 'sync-badge error'; 
-      badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> خطأ في التزامن'; 
+  else if (status === 'error'){
+      badge.className = 'sync-badge error';
+      badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> خطأ في التزامن';
   }
 }
 
